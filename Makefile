@@ -35,6 +35,8 @@ uninstall: manifests
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: manifests
+	# create envoy startup config as a configmap
+	kubectl create cm envoy-startup --from-file=envoy.yaml=config/envoy/startup.yaml
 	cd config/manager && kustomize edit set image controller=${IMG}
 	kustomize build config/default | kubectl apply -f -
 
